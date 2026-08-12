@@ -19,26 +19,8 @@ Modern enterprises frequently adopt a **hybrid cloud object storage model**:
 
 However, operating disjointed storage systems creates operational visibility gaps. **StoragePulse** unifies storage telemetry into a single, real-time dashboard—normalizing S3 protocol metrics, probing round-trip latency, and triggering automated failure alerts.
 
-```mermaid
-graph LR
-    subgraph Client ["1. Client Layer"]
-        UI["💻 StoragePulse Dashboard<br/><i>(Tailwind CSS + Chart.js)</i>"]
-    end
+<img width="422" height="351" alt="image" src="https://github.com/user-attachments/assets/bf39f583-985c-434e-96cd-fe5d97dadf05" />
 
-    subgraph Server ["2. Application Layer"]
-        API["⚡ FastAPI Async Engine<br/><i>(Data Normalization & Probing)</i>"]
-        Alerts["🚨 Alert Engine<br/><i>(Webhook / Terminal)</i>"]
-    end
-
-    subgraph Storage ["3. Storage Layer"]
-        Ceph["📦 Ceph RADOS Gateway<br/><i>(On-Premises S3)</i>"]
-        AWS["☁️ AWS S3 Cloud<br/><i>(Public Cloud)</i>"]
-    end
-
-    UI -->|HTTP GET /api/metrics| API
-    API -->|Boto3 S3 Protocol| Ceph
-    API -->|Boto3 S3 Protocol| AWS
-    API -.->|Threshold Breach| Alerts
 
 ## ✨ Key Features
 
