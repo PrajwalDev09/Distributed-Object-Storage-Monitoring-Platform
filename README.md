@@ -19,8 +19,13 @@ Modern enterprises frequently adopt a **hybrid cloud object storage model**:
 
 However, operating disjointed storage systems creates operational visibility gaps. **StoragePulse** unifies storage telemetry into a single, real-time dashboard—normalizing S3 protocol metrics, probing round-trip latency, and triggering automated failure alerts.
 
-<img width="422" height="351" alt="image" src="https://github.com/user-attachments/assets/bf39f583-985c-434e-96cd-fe5d97dadf05" />
+---
 
+## 📐 System Architecture
+
+<img width="422" height="351" alt="System Architecture Diagram" src="https://github.com/user-attachments/assets/bf39f583-985c-434e-96cd-fe5d97dadf05" />
+
+---
 
 ## ✨ Key Features
 
@@ -67,57 +72,61 @@ python -m venv venv
 # On Linux / macOS:
 source venv/bin/activate
 
-```bash
 # Install Dependencies
 pip install -r requirements.txt
+
 Step 2: Environment Configuration
+
 Copy .env.example to .env:
-code
-Bash
+
 cp .env.example .env
+
 Configure your .env credentials file:
-code
-Env
+
 # Web Server Configuration
 PORT=8000
 MOCK_MODE=false
-```bash
+
 # AWS S3 Configuration
 AWS_ACCESS_KEY_ID=YOUR_REAL_AWS_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY=YOUR_REAL_AWS_SECRET_KEY
 AWS_REGION=us-east-1
-```bash
+
 # Local Ceph / S3 Object Gateway Configuration (Port 8088)
 CEPH_RGW_ENDPOINT=http://127.0.0.1:8088
 CEPH_ACCESS_KEY=ceph_demo_access_key
 CEPH_SECRET_KEY=ceph_demo_secret_key
 
 Step 3: Run Local Object Store & Web Server
-```bash
+
 # 1. Start Local S3/Ceph Container on Port 8088
 docker run -d --name ceph-rgw -p 8088:9000 \
   -e "MINIO_ROOT_USER=ceph_demo_access_key" \
   -e "MINIO_ROOT_PASSWORD=ceph_demo_secret_key" \
   minio/minio server /data
-```bash
+
 # 2. Launch FastAPI Web Application
 uvicorn app.main:app --reload --port 8000
+
 Open your browser and navigate to:
 👉 http://127.0.0.1:8000
+
 Step 4: Run Real-Time Traffic Generator (Optional)
-Open a second terminal window in the project folder and start the synthetic traffic generator:
-code
-Bash
+
+Open a second terminal window in the project folder and start the synthetic
+traffic generator:
+
 # Activate Virtual Environment
 .\venv\Scripts\Activate.ps1
 
 # Run Traffic Simulator
 python simulate_traffic.py
-Watch the dashboard charts and bucket explorer table update live as files are uploaded!
+
+Watch the dashboard charts and bucket explorer table update live as files are
+uploaded!
 
 📂 Repository Directory Layout
-code
-Text
+
 storage-monitor/
 ├── .env.example             # Environment configuration template
 ├── .gitignore                # Git file exclusion rules
@@ -132,22 +141,27 @@ storage-monitor/
 │   │   └── ceph_collector.py # Ceph RGW Boto3 metrics fetcher
 │   └── static/
 │       └── index.html        # Interactive Single-Page Application UI
+
 🔌 API Endpoint Documentation
-Endpoint	Method	Description
 
-/	GET	Serves the main single-page monitoring dashboard UI
-
-/api/metrics	GET	Fetches aggregated storage stats, object counts, latency probes, and bucket lists
-
-/api/health	GET	System health check and liveness probe
+| Endpoint       | Method | Description                                                                       |
+| :------------- | :----- | :-------------------------------------------------------------------------------- |
+| `/`            | `GET`  | Serves the main single-page monitoring dashboard UI                               |
+| `/api/metrics` | `GET`  | Fetches aggregated storage stats, object counts, latency probes, and bucket lists |
+| `/api/health`  | `GET`  | System health check and liveness probe                                            |
 
 💡 System Design Talking Points (For Interviews)
 
-Protocol Normalization: Abstracted heterogeneous response metadata from AWS S3 REST API and Ceph RADOS Gateway into a unified JSON telemetry schema.
-Non-Blocking Architecture: Applied asynchronous endpoints in FastAPI to keep user dashboard responsiveness sub-10ms regardless of external API latencies.
-Observability & Fault Isolation: Built threshold-based alerting to isolate local network bottlenecks from public cloud service degradation.
+  - Protocol Normalization: Abstracted heterogeneous response metadata from AWS
+    S3 REST API and Ceph RADOS Gateway into a unified JSON telemetry schema.
+  - Non-Blocking Architecture: Applied asynchronous endpoints in FastAPI to keep
+    user dashboard responsiveness sub-10ms regardless of external API latencies.
+  - Observability & Fault Isolation: Built threshold-based alerting to isolate
+    local network bottlenecks from public cloud service degradation.
 
 🤝 Contributing & License
 
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+Contributions, issues, and feature requests are welcome! Feel free to check the
+issues page.
 This project is licensed under the MIT License.
+
