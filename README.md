@@ -75,13 +75,13 @@ source venv/bin/activate
 # Install Dependencies
 pip install -r requirements.txt
 
-Step 2: Environment Configuration
-
+**Step 2: Environment Configuration
+**
 Copy .env.example to .env:
 
 cp .env.example .env
 
-Configure your .env credentials file:
+**Configure your .env credentials file:**
 
 # Web Server Configuration
 PORT=8000
@@ -97,7 +97,7 @@ CEPH_RGW_ENDPOINT=http://127.0.0.1:8088
 CEPH_ACCESS_KEY=ceph_demo_access_key
 CEPH_SECRET_KEY=ceph_demo_secret_key
 
-Step 3: Run Local Object Store & Web Server
+**Step 3: Run Local Object Store & Web Server**
 
 # 1. Start Local S3/Ceph Container on Port 8088
 docker run -d --name ceph-rgw -p 8088:9000 \
@@ -108,10 +108,10 @@ docker run -d --name ceph-rgw -p 8088:9000 \
 # 2. Launch FastAPI Web Application
 uvicorn app.main:app --reload --port 8000
 
-Open your browser and navigate to:
+**Open your browser and navigate to:**
 👉 http://127.0.0.1:8000
 
-Step 4: Run Real-Time Traffic Generator (Optional)
+**Step 4: Run Real-Time Traffic Generator (Optional)**
 
 Open a second terminal window in the project folder and start the synthetic
 traffic generator:
@@ -122,42 +122,10 @@ traffic generator:
 # Run Traffic Simulator
 python simulate_traffic.py
 
-Watch the dashboard charts and bucket explorer table update live as files are
-uploaded!
+**Watch the dashboard charts and bucket explorer table update live as files are
+uploaded!**
 
-📂 Repository Directory Layout
 
-storage-monitor/
-├── .env.example             # Environment configuration template
-├── .gitignore                # Git file exclusion rules
-├── requirements.txt          # Python library dependencies
-├── simulate_traffic.py       # Asynchronous load & traffic simulator
-├── app/
-│   ├── config.py             # Configuration loader
-│   ├── main.py               # FastAPI server & API route handlers
-│   ├── notifier.py           # Webhook & terminal alert manager
-│   ├── collectors/
-│   │   ├── aws_collector.py  # AWS S3 Boto3 metrics fetcher
-│   │   └── ceph_collector.py # Ceph RGW Boto3 metrics fetcher
-│   └── static/
-│       └── index.html        # Interactive Single-Page Application UI
-
-🔌 API Endpoint Documentation
-
-| Endpoint       | Method | Description                                                                       |
-| :------------- | :----- | :-------------------------------------------------------------------------------- |
-| `/`            | `GET`  | Serves the main single-page monitoring dashboard UI                               |
-| `/api/metrics` | `GET`  | Fetches aggregated storage stats, object counts, latency probes, and bucket lists |
-| `/api/health`  | `GET`  | System health check and liveness probe                                            |
-
-💡 System Design Talking Points (For Interviews)
-
-  - Protocol Normalization: Abstracted heterogeneous response metadata from AWS
-    S3 REST API and Ceph RADOS Gateway into a unified JSON telemetry schema.
-  - Non-Blocking Architecture: Applied asynchronous endpoints in FastAPI to keep
-    user dashboard responsiveness sub-10ms regardless of external API latencies.
-  - Observability & Fault Isolation: Built threshold-based alerting to isolate
-    local network bottlenecks from public cloud service degradation.
 
 🤝 Contributing & License
 
