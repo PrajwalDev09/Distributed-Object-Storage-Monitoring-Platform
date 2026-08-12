@@ -19,32 +19,26 @@ Modern enterprises frequently adopt a **hybrid cloud object storage model**:
 
 However, operating disjointed storage systems creates operational visibility gaps. **StoragePulse** unifies storage telemetry into a single, real-time dashboard—normalizing S3 protocol metrics, probing round-trip latency, and triggering automated failure alerts.
 
----
+```mermaid
+graph LR
+    subgraph Client ["1. Client Layer"]
+        UI["💻 StoragePulse Dashboard<br/><i>(Tailwind CSS + Chart.js)</i>"]
+    end
 
-## 📐 System Architecture
-code
-Code
-┌────────────────────────────────────────┐
-                   │     StoragePulse Single Page UI        │
-                   │    (HTML5 + Tailwind CSS + Chart.js)   │
-                   └───────────────────┬────────────────────┘
-                                       │ REST API Polling (/api/metrics)
-                                       ▼
-                   ┌────────────────────────────────────────┐
-                   │        FastAPI Async Backend           │
-                   │   - Data Aggregation & Normalization   │
-                   │   - Threshold & Latency Alert Engine   │
-                   └──────────┬──────────────────┬──────────┘
-                              │                  │
-           Boto3 S3 Protocol  │                  │ Boto3 S3 Protocol
-                              ▼                  ▼
-               ┌────────────────────┐      ┌────────────────────┐
-               │ Ceph Storage       │      │ AWS S3             │
-               │ (RADOS Gateway)    │      │ (Cloud Storage)    │
-               └────────────────────┘      └────────────────────┘
-code
-Code
----
+    subgraph Server ["2. Application Layer"]
+        API["⚡ FastAPI Async Engine<br/><i>(Data Normalization & Probing)</i>"]
+        Alerts["🚨 Alert Engine<br/><i>(Webhook / Terminal)</i>"]
+    end
+
+    subgraph Storage ["3. Storage Layer"]
+        Ceph["📦 Ceph RADOS Gateway<br/><i>(On-Premises S3)</i>"]
+        AWS["☁️ AWS S3 Cloud<br/><i>(Public Cloud)</i>"]
+    end
+
+    UI -->|HTTP GET /api/metrics| API
+    API -->|Boto3 S3 Protocol| Ceph
+    API -->|Boto3 S3 Protocol| AWS
+    API -.->|Threshold Breach| Alerts
 
 ## ✨ Key Features
 
