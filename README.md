@@ -67,6 +67,7 @@ python -m venv venv
 # On Linux / macOS:
 source venv/bin/activate
 
+```bash
 # Install Dependencies
 pip install -r requirements.txt
 Step 2: Environment Configuration
@@ -80,25 +81,25 @@ Env
 # Web Server Configuration
 PORT=8000
 MOCK_MODE=false
-
+```bash
 # AWS S3 Configuration
 AWS_ACCESS_KEY_ID=YOUR_REAL_AWS_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY=YOUR_REAL_AWS_SECRET_KEY
 AWS_REGION=us-east-1
-
+```bash
 # Local Ceph / S3 Object Gateway Configuration (Port 8088)
 CEPH_RGW_ENDPOINT=http://127.0.0.1:8088
 CEPH_ACCESS_KEY=ceph_demo_access_key
 CEPH_SECRET_KEY=ceph_demo_secret_key
+
 Step 3: Run Local Object Store & Web Server
-code
-Bash
+```bash
 # 1. Start Local S3/Ceph Container on Port 8088
 docker run -d --name ceph-rgw -p 8088:9000 \
   -e "MINIO_ROOT_USER=ceph_demo_access_key" \
   -e "MINIO_ROOT_PASSWORD=ceph_demo_secret_key" \
   minio/minio server /data
-
+```bash
 # 2. Launch FastAPI Web Application
 uvicorn app.main:app --reload --port 8000
 Open your browser and navigate to:
