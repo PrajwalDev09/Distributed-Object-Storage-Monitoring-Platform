@@ -137,6 +137,7 @@ Bash
 # Run Traffic Simulator
 python simulate_traffic.py
 Watch the dashboard charts and bucket explorer table update live as files are uploaded!
+
 📂 Repository Directory Layout
 code
 Text
@@ -156,13 +157,20 @@ storage-monitor/
 │       └── index.html        # Interactive Single-Page Application UI
 🔌 API Endpoint Documentation
 Endpoint	Method	Description
+
 /	GET	Serves the main single-page monitoring dashboard UI
+
 /api/metrics	GET	Fetches aggregated storage stats, object counts, latency probes, and bucket lists
+
 /api/health	GET	System health check and liveness probe
+
 💡 System Design Talking Points (For Interviews)
+
 Protocol Normalization: Abstracted heterogeneous response metadata from AWS S3 REST API and Ceph RADOS Gateway into a unified JSON telemetry schema.
 Non-Blocking Architecture: Applied asynchronous endpoints in FastAPI to keep user dashboard responsiveness sub-10ms regardless of external API latencies.
 Observability & Fault Isolation: Built threshold-based alerting to isolate local network bottlenecks from public cloud service degradation.
+
 🤝 Contributing & License
+
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 This project is licensed under the MIT License.
