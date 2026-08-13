@@ -47,15 +47,6 @@ However, operating disjointed storage systems creates operational visibility gap
 
 ---
 
-## 🚀 Quick Start Guide
-
-### Prerequisites
-* Python 3.10 or higher
-* Docker Desktop installed and running
-* An active AWS Account (or enable `MOCK_MODE=true` for offline testing)
-
----
-
 ### Step 1: Clone Repository & Setup Virtual Environment
 
 ```bash
@@ -75,43 +66,8 @@ source venv/bin/activate
 # Install Dependencies
 pip install -r requirements.txt
 
-**Step 2: Environment Configuration
-**
-Copy .env.example to .env:
 
-cp .env.example .env
 
-**Configure your .env credentials file:**
-
-# Web Server Configuration
-PORT=8000
-MOCK_MODE=false
-
-# AWS S3 Configuration
-AWS_ACCESS_KEY_ID=YOUR_REAL_AWS_ACCESS_KEY
-AWS_SECRET_ACCESS_KEY=YOUR_REAL_AWS_SECRET_KEY
-AWS_REGION=us-east-1
-
-# Local Ceph / S3 Object Gateway Configuration (Port 8088)
-CEPH_RGW_ENDPOINT=http://127.0.0.1:8088
-CEPH_ACCESS_KEY=ceph_demo_access_key
-CEPH_SECRET_KEY=ceph_demo_secret_key
-
-**Step 3: Run Local Object Store & Web Server**
-
-# 1. Start Local S3/Ceph Container on Port 8088
-docker run -d --name ceph-rgw -p 8088:9000 \
-  -e "MINIO_ROOT_USER=ceph_demo_access_key" \
-  -e "MINIO_ROOT_PASSWORD=ceph_demo_secret_key" \
-  minio/minio server /data
-
-# 2. Launch FastAPI Web Application
-uvicorn app.main:app --reload --port 8000
-
-**Open your browser and navigate to:**
-👉 http://127.0.0.1:8000
-
-**Step 4: Run Real-Time Traffic Generator (Optional)**
 
 Open a second terminal window in the project folder and start the synthetic
 traffic generator:
@@ -122,14 +78,11 @@ traffic generator:
 # Run Traffic Simulator
 python simulate_traffic.py
 
-**Watch the dashboard charts and bucket explorer table update live as files are
-uploaded!**
-
-
 
 🤝 Contributing & License
 
 Contributions, issues, and feature requests are welcome! Feel free to check the
 issues page.
+
 This project is licensed under the MIT License.
 
